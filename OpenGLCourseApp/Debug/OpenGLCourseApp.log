@@ -1,16 +1,9 @@
-﻿  DirectionalLight.cpp
-  Light.cpp
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\light.cpp(26): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\light.cpp(27): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\light.cpp(29): error C2065: 'directionLocation': undeclared identifier
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\light.cpp(29): error C2065: 'direction': undeclared identifier
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\light.cpp(30): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
-  main.cpp
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(17): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(18): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(147): error C2440: '<function-style-cast>': cannot convert from 'initializer list' to 'Light'
-  c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(147): note: No constructor could take the source type, or constructor overload resolution was ambiguous
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(159): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(185): error C2660: 'Light::UseLight': function does not take 4 arguments
-  c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\light.h(12): note: see declaration of 'Light::UseLight'
-  Generating Code...
+﻿  PointLight.cpp
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(32): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(33): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(34): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(36): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(37): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(38): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(39): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+  OpenGLCourseApp.vcxproj -> C:\Users\irisdogg\Documents\Visual Studio 2017\Projects\OpenGLCourseApp\Debug\OpenGLCourseApp.exe

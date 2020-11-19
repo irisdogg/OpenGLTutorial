@@ -1,20 +1,28 @@
 #include "DirectionalLight.h"
 
-
-DirectionalLight::DirectionalLight()
+// This will assure that colour, ambientIntensity and diffuseIntensity is initialized in Light() constructor
+DirectionalLight::DirectionalLight() : Light()
 {
-	colour = glm::vec3( 1.0f, 1.0f, 1.0f );
-	ambientIntensity = 1.0f;
-
 	direction = glm::vec3( 0.0f, -1.0f, 0.0f );
-	diffuseIntensity = 0.0f;
 }
 
-DirectionalLight::DirectionalLight( GLfloat red, GLfloat green, GLfloat blue, GLfloat aIntensity, GLfloat xDir, GLfloat yDir, GLfloat zDir, GLfloat dIntensity )
+DirectionalLight::DirectionalLight( GLfloat red, GLfloat green, GLfloat blue,
+									GLfloat aIntensity, GLfloat dIntensity,
+									GLfloat xDir, GLfloat yDir, GLfloat zDir ) : Light(red, green, blue, aIntensity, dIntensity)
 {
-	colour = glm::vec3( red, green, blue );
-	ambientIntensity = aIntensity;
-
 	direction = glm::vec3( xDir, yDir, zDir );
-	diffuseIntensity = dIntensity;
+}
+
+DirectionalLight::~DirectionalLight()
+{
+	
+}
+
+void DirectionalLight::UseLight( GLfloat ambientIntensityLocation, GLfloat ambientColourLocation, GLfloat diffuseIntensityLocation, GLfloat directionLocation )
+{
+	glUniform3f( ambientColourLocation, colour.x, colour.y, colour.z );
+	glUniform1f( ambientIntensityLocation, ambientIntensity);
+
+	glUniform3f( directionLocation, direction.x, direction.y, direction.z );
+	glUniform1f( diffuseIntensityLocation, diffuseIntensity );
 }
