@@ -6,4 +6,13 @@ c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglco
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(37): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(38): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\pointlight.cpp(39): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+  Shader.cpp
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\shader.cpp(210): warning C4244: 'argument': conversion from 'GLuint' to 'GLfloat', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\shader.cpp(209): warning C4244: 'argument': conversion from 'GLuint' to 'GLfloat', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\shader.cpp(225): warning C4244: 'argument': conversion from 'GLuint' to 'GLfloat', possible loss of data
+  main.cpp
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(17): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(18): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(160): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+  Generating Code...
   OpenGLCourseApp.vcxproj -> C:\Users\irisdogg\Documents\Visual Studio 2017\Projects\OpenGLCourseApp\Debug\OpenGLCourseApp.exe
