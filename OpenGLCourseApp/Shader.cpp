@@ -210,7 +210,7 @@ void Shader::SetDirectionalLight( DirectionalLight *dLight )
 		uniformDirectionalLight.uniformDiffuseIntensity, uniformDirectionalLight.uniformDirection );
 }
 
-void Shader::SetPointLight( PointLight *pLight, unsigned int lightCount )
+void Shader::SetPointLights( PointLight *pLight, unsigned int lightCount )
 {
 	if( lightCount > MAX_POINT_LIGHTS )
 	{
@@ -219,10 +219,10 @@ void Shader::SetPointLight( PointLight *pLight, unsigned int lightCount )
 
 	glUniform1i( uniformPointLightCount, lightCount );
 
-	for( size_t i = 0; i < lightCount; ++i )
+	for( size_t i = 0; i < lightCount; i++ )
 	{
-		auto currLight = uniformPointLight[i];
-		pLight[i].UseLight( currLight.uniformAmbientIntensity, currLight.uniformColour, currLight.uniformDiffuseIntensity, currLight.uniformPosition, currLight.uniformConstant, currLight.uniformLinear, currLight.uniformExponent );
+		pLight[i].UseLight( uniformPointLight[i].uniformAmbientIntensity, uniformPointLight[i].uniformColour, uniformPointLight[i].uniformDiffuseIntensity, 
+			uniformPointLight[i].uniformPosition, uniformPointLight[i].uniformConstant, uniformPointLight[i].uniformLinear, uniformPointLight[i].uniformExponent );
 	}
 }
 
