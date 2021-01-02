@@ -1,5 +1,5 @@
 ﻿  main.cpp
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(17): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(18): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(200): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(223): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
   OpenGLCourseApp.vcxproj -> C:\Users\irisdogg\Documents\Visual Studio 2017\Projects\OpenGLCourseApp\Debug\OpenGLCourseApp.exe
