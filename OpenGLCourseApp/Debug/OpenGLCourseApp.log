@@ -1,5 +1,11 @@
 ﻿  main.cpp
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(17): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(18): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(223): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(264): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+  Model.cpp
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\model.cpp(19): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'const std::string'
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\model.cpp(137): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+  Texture.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   OpenGLCourseApp.vcxproj -> C:\Users\irisdogg\Documents\Visual Studio 2017\Projects\OpenGLCourseApp\Debug\OpenGLCourseApp.exe
