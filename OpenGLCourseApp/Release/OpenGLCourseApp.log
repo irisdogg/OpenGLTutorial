@@ -1,10 +1,10 @@
 ﻿  main.cpp
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(17): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
 c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\window.h(18): warning C4244: 'return': conversion from 'GLint' to 'GLfloat', possible loss of data
-c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(262): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\irisdogg\documents\visual studio 2017\projects\openglcourseapp\openglcourseapp\main.cpp(353): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
   Generating code
-  1 of 893 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 914 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   OpenGLCourseApp.vcxproj -> C:\Users\irisdogg\Documents\Visual Studio 2017\Projects\OpenGLCourseApp\Release\OpenGLCourseApp.exe
