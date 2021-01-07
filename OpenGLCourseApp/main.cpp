@@ -26,12 +26,13 @@
 #include "Model.h"
 
 GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformAmbientIntensity = 0, uniformEyePosition = 0,
-uniformSpecularIntensity = 0, uniformShininess = 0;
+uniformSpecularIntensity = 0, uniformShininess = 0, uniformOmniLightPos = 0, uniformFarPlane = 0;
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
 std::vector<Shader*> shaderList;
 Shader directionalShadowShader;
+Shader omniShadowShader;
 
 Camera camera;
 
@@ -161,11 +162,12 @@ void CreateShaders()
 	shader1->CreateFromFiles( vShader, fShader );
 	shaderList.push_back( shader1 );
 
-	directionalShadowShader = Shader();
 	directionalShadowShader.CreateFromFiles( "Shaders/directional_shadow_map.vert", "Shaders/directional_shadow_map.frag" );
+
+	omniShadowShader.CreateFromFiles( "Shaders/omni_shadow_map.vert", "Shaders/omni_shadow_map.geom", "Shaders/omni_shadow_map.frag" );
 }
 
-void RenderScene()
+void RenderScene( )
 {
 	// Create model
 	glm::mat4 model( 1.0f );
@@ -198,7 +200,10 @@ void RenderScene()
 	shinyMaterial.UseMaterial( uniformSpecularIntensity, uniformShininess );
 	xwing.RenderModel();
 
-	blackHawkAngle += 1.5f;
+	GLfloat now = glfwGetTime();
+	deltaTime = now - lastTime;
+
+	blackHawkAngle += deltaTime * 4;
 	if( blackHawkAngle > 360.0f )
 	{
 		blackHawkAngle = 0.1f;
@@ -218,7 +223,9 @@ void RenderScene()
 void DirectionalShadowMapPass( DirectionalLight* light)
 {
 	directionalShadowShader.UseShader();
+
 	auto shadowMap = light->GetShadowMap();
+
 	glViewport( 0, 0, shadowMap->GetShadowWidth(), shadowMap->GetShadowHeight() );
 
 	shadowMap->Write();
@@ -232,7 +239,30 @@ void DirectionalShadowMapPass( DirectionalLight* light)
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void RenderPass( glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
+void OmniShadowMapPass( PointLight* light )
+{
+	omniShadowShader.UseShader();
+
+	glViewport( 0, 0, light->GetShadowMap()->GetShadowWidth(), light->GetShadowMap()->GetShadowHeight() );
+
+	light->GetShadowMap()->Write();
+	glClear( GL_DEPTH_BUFFER_BIT );
+
+	uniformModel = omniShadowShader.GetModelLocation();
+	uniformOmniLightPos = omniShadowShader.GetOmniLightPosLocation();
+	uniformFarPlane = omniShadowShader.GetFarPlaneLocation();
+
+	glUniform3f( uniformOmniLightPos, light->GetPosition().x, light->GetPosition().y, light->GetPosition().z );
+	glUniform1f( uniformFarPlane, light->GetFarPlane() );
+	omniShadowShader.SetLightMatrices( light->CalculateLightTransform() );
+
+	RenderScene();
+
+	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+}
+
+
+void RenderPass( glm::mat4 projectionMatrix, glm::mat4 viewMatrix )
 {
 	shaderList[0]->UseShader();
 	uniformModel = shaderList[0]->GetModelLocation();
@@ -263,7 +293,7 @@ void RenderPass( glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
 
 	glm::vec3 lowerLight = camera.GetCameraPosition();
 	lowerLight.y -= 0.3f;
-	//spotLights[0].SetFlash( lowerLight, camera.GetCameraDirection() );
+	spotLights[0].SetFlash( lowerLight, camera.GetCameraDirection() );
 
 	RenderScene();
 }
@@ -306,9 +336,11 @@ int main()
 	float offset = 2.0f;
 
 	// red lights
-	for( int i = 0; i <= 3; i++ )
+	for( int i = 0; i < 3; i++ )
 	{
-		pointLights[i] = PointLight( 1.0f, 0.0f, 0.0f,
+		pointLights[i] = PointLight( 1024, 1024,
+									0.01f, 100.f,
+									1.0f, 0.0f, 0.0f,
 									0.3f, 0.4f,
 									4.0, 0.2f, i * offset,
 									0.3f, 0.2f, 0.1f );
@@ -319,7 +351,9 @@ int main()
 	int j = 0;
 	for( int i = 3; i < MAX_POINT_LIGHTS; i++ )
 	{
-		pointLights[i] = PointLight( 0.0f, 0.0f, 1.0f,
+		pointLights[i] = PointLight( 1024, 1024,
+									0.01f, 100.f,
+									0.0f, 0.0f, 1.0f,
 									0.3f, 0.4f,
 									-4.0, 0.2f, j * offset,
 									0.3f, 0.2f, 0.1f );
@@ -327,25 +361,29 @@ int main()
 		j++;
 	}
 
-	spotLights[0] = SpotLight( 1.0f, 1.0f, 1.0f,
+	spotLights[0] = SpotLight( 1024, 1024,
+								0.01f, 100.f,
+								1.0f, 1.0f, 1.0f,
 								0.0f, 2.0f,
 								0.0f, 0.0f, 0.0f,
 								0.0f, -1.0f, 0.0f,
 								1.0f, 0.0f, 0.0f,
 								20.0f );
 
-	//spotLightCount++;
+	spotLightCount++;
 
-	spotLights[1] = SpotLight( 1.0f, 1.0f, 1.0f,
+	spotLights[1] = SpotLight( 1024, 1024,
+								0.01f, 100.f,
+								1.0f, 1.0f, 1.0f,
 								0.0f, 1.0f,
 								0.0f, -1.5f, 0.0f,
 								-100.0f, -1.0f, 0.0f,
 								1.0f, 0.0f, 0.0f,
 								20.0f );
 
-	//spotLightCount++;
+	spotLightCount++;
 
-	glm::mat4 projection = glm::perspective(45.0f, mainWindow.GetBufferWidth() / mainWindow.GetBufferHeight(), 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(60.0f), mainWindow.GetBufferWidth() / mainWindow.GetBufferHeight(), 0.1f, 100.0f);
 
 	// Loop until window closed
 	while( !mainWindow.GetShouldClose() )
@@ -361,6 +399,17 @@ int main()
 		camera.MouseControl( mainWindow.GetXChange(), mainWindow.GetYChange() );
 
 		DirectionalShadowMapPass( &mainLight );
+
+		for( size_t i = 0; i < pointLightCount; i++ )
+		{
+			OmniShadowMapPass( &pointLights[i] );
+		}
+
+		for( size_t i = 0; i < spotLightCount; i++ )
+		{
+			OmniShadowMapPass( &spotLights[i] );
+		}
+
 		RenderPass( projection, camera.CalculateViewMatrix() );
 		
 		glUseProgram( 0 );
