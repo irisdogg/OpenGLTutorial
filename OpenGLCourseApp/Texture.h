@@ -1,7 +1,8 @@
 #pragma once
 
 #include <GL\glew.h>
-#include "stb_image.h"
+
+#include "CommonValues.h"
 
 class Texture
 {
@@ -13,6 +14,7 @@ public:
 
 	bool LoadTexture();
 	bool LoadTextureA();
+
 	void UseTexture();
 	void ClearTexture();
 

@@ -67,13 +67,13 @@ uniform Material material;
 
 uniform vec3 eyePosition;
 
-vec3 sampleOffsetDirections[20] = vec3[]
+vec3 gridSamplingDisk[20] = vec3[]
 (
-	vec3(1, 1, 1), vec3(1, -1, 1), vec3(-1, -1, 1), vec3(-1, 1, 1),
-	vec3(1, 1, -1), vec3(1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
-	vec3(1, 1, 0), vec3(1, -1, 0), vec3(-1, -1, 0), vec3(-1, 1, 0),
-	vec3(1, 0, 1), vec3(-1, 0, 1), vec3(1, 0, -1), vec3(-1, 0, -1),
-	vec3(0, 1, 1), vec3(0, -1, 1), vec3(0, -1, -1), vec3(0, 1, -1)
+   vec3(1, 1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1, 1,  1), 
+   vec3(1, 1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+   vec3(1, 1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1, 1,  0),
+   vec3(1, 0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1, 0, -1),
+   vec3(0, 1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0, 1, -1)
 );
 
 float CalcDirectionalShadowFactor(DirectionalLight light)
@@ -85,9 +85,9 @@ float CalcDirectionalShadowFactor(DirectionalLight light)
 
 	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(light.direction);
-	float bias = max( 0.05 * (1 - dot(normal, lightDirection)), 0.005);
+	float bias = max( 0.05 * (1 - dot(normal, lightDirection)), 0.0005);
 
-	float shadow = 0;
+	float shadow = 0.0;
 
 	vec2 texelSize = 1.0 / textureSize(directionalShadowMap, 0);
 
@@ -116,15 +116,15 @@ float CalcOmniShadowFactor(PointLight light, int shadowIndex)
 	float currentDepth = length(fragToLight);
 
 	float shadow = 0.0;
-	float bias = 0.05;
+	float bias = 0.15;
 	int samples = 20;
 
 	float viewDistance = length(eyePosition - FragPos);
 	float diskRadius = (1.0 + (viewDistance/omniShadowMaps[shadowIndex].farPlane)) / 25.0;
 
-	for(int i = 0; i < samples; i++)
+	for(int i = 0; i < samples; ++i)
 	{
-		float closestDepth = texture(omniShadowMaps[shadowIndex].shadowMap, fragToLight + sampleOffsetDirections[i] * diskRadius).r;
+		float closestDepth = texture(omniShadowMaps[shadowIndex].shadowMap, fragToLight + gridSamplingDisk[i] * diskRadius).r;
 		closestDepth *= omniShadowMaps[shadowIndex].farPlane;
 		if(currentDepth - bias > closestDepth)
 		{

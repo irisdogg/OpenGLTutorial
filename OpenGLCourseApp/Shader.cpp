@@ -204,6 +204,18 @@ void Shader::CompileProgram()
 		uniformSpotLight[i].uniformEdge = glGetUniformLocation( shaderID, locBuff );
 	}
 
+
+	for( size_t i = 0; i < MAX_SPOT_LIGHTS + MAX_POINT_LIGHTS; i++ )
+	{
+		char locBuff[100] = { '\0' };
+
+		snprintf( locBuff, sizeof( locBuff ), "omniShadowMaps[%d].shadowMap", i );
+		uniformOmniShadowMap[i].uniformShadowMap = glGetUniformLocation( shaderID, locBuff );
+
+		snprintf( locBuff, sizeof( locBuff ), "omniShadowMaps[%d].farPlane", i );
+		uniformOmniShadowMap[i].uniformFarPlane = glGetUniformLocation( shaderID, locBuff );
+	}
+
 	uniformTexture = glGetUniformLocation( shaderID, "theTexture" );
 	uniformDirectionalLightTransform = glGetUniformLocation( shaderID, "directionalLightTransform" );
 	uniformDirectionalShadowMap = glGetUniformLocation( shaderID, "directionalShadowMap" );
@@ -217,17 +229,6 @@ void Shader::CompileProgram()
 
 		snprintf( locBuff, sizeof( locBuff ), "lightMatrices[%d]", i );
 		uniformLightMatrices[i] = glGetUniformLocation( shaderID, locBuff );
-	}
-
-	for( size_t i = 0; i < MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS; i++ )
-	{
-		char locBuff[100] = { '\0' };
-
-		snprintf( locBuff, sizeof( locBuff ), "omniShadowMaps[%d].shadowMap", i );
-		uniformOmniShadowMap[i].shadowMap = glGetUniformLocation( shaderID, locBuff );
-
-		snprintf( locBuff, sizeof( locBuff ), "omniShadowMaps[%d].farPlane", i );
-		uniformOmniShadowMap[i].farPlane = glGetUniformLocation( shaderID, locBuff );
 	}
 }
 
@@ -335,12 +336,16 @@ void Shader::SetPointLights( PointLight *pLight, unsigned int lightCount, unsign
 
 	for( size_t i = 0; i < lightCount; i++ )
 	{
-		pLight[i].UseLight( uniformPointLight[i].uniformAmbientIntensity, uniformPointLight[i].uniformColour, uniformPointLight[i].uniformDiffuseIntensity, 
-			uniformPointLight[i].uniformPosition, uniformPointLight[i].uniformConstant, uniformPointLight[i].uniformLinear, uniformPointLight[i].uniformExponent );
+		//pLight[i].UseLight( uniformPointLight[i].uniformAmbientIntensity, uniformPointLight[i].uniformColour, uniformPointLight[i].uniformDiffuseIntensity, 
+		//	uniformPointLight[i].uniformPosition, uniformPointLight[i].uniformConstant, uniformPointLight[i].uniformLinear, uniformPointLight[i].uniformExponent );
+		pLight[i].UseLight( uniformPointLight[i].uniformAmbientIntensity, uniformPointLight[i].uniformColour,
+			uniformPointLight[i].uniformDiffuseIntensity, uniformPointLight[i].uniformPosition,
+			uniformPointLight[i].uniformConstant, uniformPointLight[i].uniformLinear, uniformPointLight[i].uniformExponent );
+
 	
 		pLight[i].GetShadowMap()->Read( GL_TEXTURE0 + textureUnit + i );
-		glUniform1i( uniformOmniShadowMap[i + offset].shadowMap, textureUnit + i );
-		glUniform1f( uniformOmniShadowMap[i + offset].farPlane, pLight[i].GetFarPlane() );
+		glUniform1i( uniformOmniShadowMap[i + offset].uniformShadowMap, textureUnit + i );
+		glUniform1f( uniformOmniShadowMap[i + offset].uniformFarPlane, pLight[i].GetFarPlane() );
 	}
 }
 
@@ -355,13 +360,17 @@ void Shader::SetSpotLights( SpotLight * sLight, unsigned int lightCount, unsigne
 
 	for( size_t i = 0; i < lightCount; i++ )
 	{
-		sLight[i].UseLight( uniformSpotLight[i].uniformAmbientIntensity, uniformSpotLight[i].uniformColour, uniformSpotLight[i].uniformDiffuseIntensity,
-			uniformSpotLight[i].uniformPosition, uniformSpotLight[i].uniformDirection, uniformSpotLight[i].uniformConstant, uniformSpotLight[i].uniformLinear, uniformSpotLight[i].uniformExponent,
+		//sLight[i].UseLight( uniformSpotLight[i].uniformAmbientIntensity, uniformSpotLight[i].uniformColour, uniformSpotLight[i].uniformDiffuseIntensity,
+		//	uniformSpotLight[i].uniformPosition, uniformSpotLight[i].uniformDirection, uniformSpotLight[i].uniformConstant, uniformSpotLight[i].uniformLinear, uniformSpotLight[i].uniformExponent,
+		//	uniformSpotLight[i].uniformEdge );
+		sLight[i].UseLight( uniformSpotLight[i].uniformAmbientIntensity, uniformSpotLight[i].uniformColour,
+			uniformSpotLight[i].uniformDiffuseIntensity, uniformSpotLight[i].uniformPosition, uniformSpotLight[i].uniformDirection,
+			uniformSpotLight[i].uniformConstant, uniformSpotLight[i].uniformLinear, uniformSpotLight[i].uniformExponent,
 			uniformSpotLight[i].uniformEdge );
 
 		sLight[i].GetShadowMap()->Read( GL_TEXTURE0 + textureUnit + i );
-		glUniform1i( uniformOmniShadowMap[i + offset].shadowMap, textureUnit + i );
-		glUniform1f( uniformOmniShadowMap[i + offset].farPlane, sLight[i].GetFarPlane() );
+		glUniform1i( uniformOmniShadowMap[i + offset].uniformShadowMap, textureUnit + i );
+		glUniform1f( uniformOmniShadowMap[i + offset].uniformFarPlane, sLight[i].GetFarPlane() );
 	}
 }
 

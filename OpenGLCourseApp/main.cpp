@@ -22,6 +22,7 @@
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "Material.h"
+#include "Skybox.h"
 
 #include "Model.h"
 
@@ -49,6 +50,8 @@ Model blackhawk;
 DirectionalLight mainLight;
 PointLight pointLights[MAX_POINT_LIGHTS];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
+
+Skybox skybox;
 
 char* brickFileLocation = "Textures/brick.png";
 char* dirtFileLocation = "Textures/dirt.png";
@@ -167,7 +170,11 @@ void CreateShaders()
 
 	omniShadowShader = Shader();
 	//omniShadowShader.CreateFromFiles( "Shaders/omni_directional_shadow_map.vert", "Shaders/omni_directional_shadow_map.geom", "Shaders/omni_directional_shadow_map.frag" );
-	omniShadowShader.CreateFromFiles( "Shaders/omni_shadow_map.vert", "Shaders/omni_shadow_map.geom", "Shaders/omni_shadow_map.frag" );
+	//omniShadowShader.CreateFromFiles( "Shaders/omni_shadow_map.vert", "Shaders/omni_shadow_map.geom", "Shaders/omni_shadow_map.frag" );
+	//"C:/Users/irisdogg/Documents/Visual_Studio 2017/Projects/OpenGLCourseApp/OpenGLCourseApp/Shaders/shader.vert"
+	omniShadowShader.CreateFromFiles( "C:/Users/irisdogg/Documents/Visual Studio 2017/Projects/OpenGLCourseApp/OpenGLCourseApp/Shaders/omni_directional_shadow_map.vert", 
+		"C:/Users/irisdogg/Documents/Visual Studio 2017/Projects/OpenGLCourseApp/OpenGLCourseApp/Shaders/omni_directional_shadow_map.geom", 
+		"C:/Users/irisdogg/Documents/Visual Studio 2017/Projects/OpenGLCourseApp/OpenGLCourseApp/Shaders/omni_directional_shadow_map.frag" );
 }
 
 void RenderScene( )
@@ -270,7 +277,16 @@ void OmniShadowMapPass( PointLight* light )
 
 void RenderPass( glm::mat4 projectionMatrix, glm::mat4 viewMatrix )
 {
+	glViewport( 0, 0, 1366, 768 );
+
+	// Clear window
+	glClearColor( 0.0f, 0.f, 0.f, 1.0f );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+	skybox.DrawSkybox( viewMatrix, projectionMatrix );
+
 	shaderList[0].UseShader();
+
 	uniformModel = shaderList[0].GetModelLocation();
 	uniformProjection = shaderList[0].GetProjectionLocation();
 	uniformView = shaderList[0].GetViewLocation();
@@ -278,12 +294,7 @@ void RenderPass( glm::mat4 projectionMatrix, glm::mat4 viewMatrix )
 	uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 	uniformShininess = shaderList[0].GetShininessLocation();
 
-	glViewport( 0, 0, 1366, 768 );
-
-	// Clear window
-	glClearColor( 0.0f, 0.f, 0.f, 1.0f );
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
+	
 	glUniformMatrix4fv( uniformProjection, 1, GL_FALSE, glm::value_ptr( projectionMatrix ) );
 	glUniformMatrix4fv( uniformView, 1, GL_FALSE, glm::value_ptr( viewMatrix ) );
 	glUniform3f( uniformEyePosition, camera.GetCameraPosition().x, camera.GetCameraPosition().y, camera.GetCameraPosition().z );
@@ -338,9 +349,9 @@ int main()
 	blackhawk.LoadModel( "Models/uh60.obj" );
 
 	mainLight = DirectionalLight( 2048, 2048,
-								1.0f, 1.0f, 1.0f,		// rgb colour
-								0.1f, 0.3f,			// ambient, direction intensity
-								0.0f, -15.0f, -10.0);	// x, y, z direction
+								1.0f, 0.6f, 0.0f,		// rgb colour
+								0.1f, 0.8f,			// ambient, direction intensity
+								-10.0f, -12.0f, 18.5);	// x, y, z direction
 	/*
 	pointLights[0] = PointLight( 1024, 1024,
 								0.01f, 100.f,
@@ -373,10 +384,10 @@ int main()
 								 0.0f, 1.0f, 0.0f,
 								 0.0f, 1.0f,
 								 -4.0f, 3.0f, 0.0f,
-								 0.3f, 0.01f, 0.01f );
+								 0.3f, 0.2f, 0.1f );
 	pointLightCount++;
 
-
+	/*
 	spotLights[0] = SpotLight( 1024, 1024,
 		0.1f, 100.0f,
 		1.0f, 1.0f, 1.0f,
@@ -394,7 +405,8 @@ int main()
 		-100.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
 		20.0f );
-	spotLightCount++;
+	spotLightCount++;*/
+	
 	/*
 	// red lights
 	for( int i = 0; i < 3; i++ )
@@ -403,7 +415,7 @@ int main()
 									0.01f, 100.f,
 									1.0f, 0.0f, 0.0f,
 									0.3f, 0.4f,
-									4.0, 0.2f, i * offset,
+									4.0, 0.2f, i * 0.2,
 									0.3f, 0.2f, 0.1f );
 		pointLightCount++;
 	}
@@ -416,12 +428,12 @@ int main()
 									0.01f, 100.f,
 									0.0f, 0.0f, 1.0f,
 									0.3f, 0.4f,
-									-4.0, 0.2f, j * offset,
+									-4.0, 0.2f, j * 0.2,
 									0.3f, 0.2f, 0.1f );
 		pointLightCount++;
 		j++;
-	}*/
-
+	}
+	*/
 	/*
 	spotLights[0] = SpotLight( 1024, 1024,
 								0.01f, 100.f,
@@ -445,6 +457,16 @@ int main()
 	*/
 	//spotLightCount++;
 
+	std::vector<std::string> skyboxFaces;
+	skyboxFaces.push_back( "Textures/skybox/cupertin-lake_rt.tga" );
+	skyboxFaces.push_back( "Textures/skybox/cupertin-lake_lf.tga" );
+	skyboxFaces.push_back( "Textures/skybox/cupertin-lake_up.tga" );
+	skyboxFaces.push_back( "Textures/skybox/cupertin-lake_dn.tga" );
+	skyboxFaces.push_back( "Textures/skybox/cupertin-lake_bk.tga" );
+	skyboxFaces.push_back( "Textures/skybox/cupertin-lake_ft.tga" );
+
+	skybox = Skybox( skyboxFaces );
+
 	glm::mat4 projection = glm::perspective(glm::radians(60.0f), mainWindow.GetBufferWidth() / mainWindow.GetBufferHeight(), 0.1f, 100.0f);
 
 	// Loop until window closed
@@ -460,7 +482,6 @@ int main()
 		camera.KeyControl( mainWindow.GetKeys(), deltaTime );
 		camera.MouseControl( mainWindow.GetXChange(), mainWindow.GetYChange() );
 
-		// check this function to see if it does what I think it does
 		if( mainWindow.GetKeys()[GLFW_KEY_L] )
 		{
 			spotLights[0].Toggle();
